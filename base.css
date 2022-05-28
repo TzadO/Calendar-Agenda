@@ -101,35 +101,44 @@ h1 {
 }
 
 .navigation ol li {
-  background-color: var(--clr-8);
-  border-radius: 20px;
-  padding: 0.5rem 3rem;
   transition: all 0.2s;
-  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
 }
 
 .navigation ol li:not(:first-child):not(:last-child) {
   margin: 0 0.5rem;
 }
 
-.navigation ol li:hover,
-h2:hover {
-  cursor: pointer;
-  outline: 1px solid blanchedalmond;
-  box-shadow: 0 0 7px 3px rgba(0, 0, 0, 0.3);
+.navigation ol li:hover {
   transform: translateY(-1px);
 }
 
-.navigation ol li:active,
-h2:active {   
-  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.3);
+.navigation ol li:active {
   transform: translateY(1px);
 }
 
 .navigation ol li a:link,
 .navigation ol li a:visited {
+  background-color: var(--clr-8);
+  border-radius: 20px;
+  padding: 0.5rem 3rem;
+  transition: all 0.2s;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
   color: var(--clr-5);
   text-decoration: none;
+}
+
+.navigation ol li a:link:hover,
+h2:hover {
+  cursor: pointer;
+  outline: 1px solid blanchedalmond;
+  box-shadow: 0 1px 7px 3px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.navigation ol li a:link:active,
+h2:active {   
+  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.3);
+  transform: translateY(1px);
 }
 
 

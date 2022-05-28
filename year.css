@@ -85,6 +85,12 @@ h2 {
   background-color: transparent;
 }
 
+.planned {
+  background-color:   #232b2b;
+  color: var(--clr-5);
+  border: 2px solid black;
+}
+
 .highlight {
   background-color: var(--clr-6);
 }

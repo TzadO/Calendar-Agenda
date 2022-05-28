@@ -24,52 +24,51 @@
     <main>
       <div class="main-container">
         <div class="container-left">
-          <div class="new-item">
-            <i class="fa fa-calendar-check-o fa-3x">&nbsp;&nbsp;&nbsp;New Item</i>
-          </div>
           <div class="month-overview">
             <div class="weekdays">
               <ul class="weekdays-list"></ul>
             </div>
-              <div class="days"></div>
+            <div class="days"></div>
           </div>
+          <div class="new-item">
+            <i class="fa fa-calendar-check-o fa-3x">&nbsp;&nbsp;&nbsp;Selected Day</i>
+          </div>
+          <button class="clear-storage">Clear all calendar items</button>
         </div>
         <div class="container-mid">
-          <form action="" class="form" id="form">
-            <div class="title">
-              <label for="title" class="form__label">Title:</label>
-              <input id="title" type="text" class="form__input" placeholder="Title" required>
-            </div>
-            <div class="time">
-              <div class="time__start">
-                <label for="start" class="form__label">Start:</label>
-                <input id="title" type="time" class="form__input" required>
-              </div>
-              <div class="time__end">
-                <label for="end" class="form__label">End:</label>
-                <input id="title" type="time" class="form__input" required>
-              </div>
-            </div>
-            <div class="location">
-              <label for="location" class="form__label">Location:</label>
-              <input id="location" type="text" class="form__input" placeholder="Location">
-            </div>
-            <div class="attendees">
-              <label for="attendees" class="form__label">Attendees:</label>
-              <input id="attendees" type="text" class="form__input" placeholder="Attendees">
-            </div>
-            <div class="notes">
-              <label for="notes" class="form__label">Notes:</label>
-              <textarea id="notes" type="text" class="form__input" placeholder="Notes" rows="5" cols="50"></textarea>
-            </div>
-            <button type="submit" class="submit" form="form">Confirm</button> 
-          </form>
+          <div class="items"></div>
         </div>
         <div class="container-right">
-          <div class="item">
-
+            <form class="form" id="form">
+              <div class="title">
+                <label for="title" class="form__label">Title:</label>
+                <input id="title" type="text" class="form__input" placeholder="Title" required>
+              </div>
+              <div class="time">
+                <div class="time__start">
+                  <label for="start" class="form__label time-start">Start:</label>
+                  <input id="start" type="time" class="form__input" required>
+                </div>
+                <div class="time__end">
+                  <label for="end" class="form__label time-end">End:</label>
+                  <input id="end" type="time" class="form__input">
+                </div>
+              </div>
+              <div class="location">
+                <label for="location" class="form__label">Location:</label>
+                <input id="location" type="text" class="form__input" placeholder="Location" required>
+              </div>
+              <div class="attendees">
+                <label for="attendees" class="form__label">Attendees:</label>
+                <input id="attendees" type="text" class="form__input" placeholder="Attendees">
+              </div>
+              <div class="notes">
+                <label for="notes" class="form__label">Notes:</label>
+                <textarea id="notes" type="text" class="form__input" placeholder="Notes" rows="5" cols="50"></textarea>
+              </div>
+              <button class="submit">Confirm</button> 
+            </form>
           </div>
-
         </div>
       </div>
     </main>
