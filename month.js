@@ -100,27 +100,19 @@ renderlocalStorageData();
 
 function loadSelectedDate(e) {
   let target = e.target;
-  if (target.className === "month-days" || target.className === "month-days highlight") {
-    const dayNr = +target.firstChild.nextSibling.textContent;
+  if (target.closest('.month-days')) {
+    const dayNr = +target.closest('.month-days').firstChild.nextSibling.textContent;
     location.href = `day.html?date=${dayNr}-${selectedMonth}-${selectedYear}`;
   }
-  if (target.parentNode.className === "month-days" || target.parentNode.className === "month-days highlight") {
-    const dayNr = +target.parentNode.firstChild.nextSibling.textContent;
-    location.href = `day.html?date=${dayNr}-${selectedMonth}-${selectedYear}`;
-  }
-  if (target.parentNode.parentNode.className === "month-days" || target.parentNode.parentNode.className === "month-days highlight") {
-    const dayNr = +target.parentNode.parentNode.firstChild.nextSibling.textContent;
-    location.href = `day.html?date=${dayNr}-${selectedMonth}-${selectedYear}`;
-  }
-  if (target.className === "month-name") {
+  if (target.classList.contains("month-name") ) {
     const monthNr = months.indexOf(target.textContent);
     location.href = `month.html?date=${monthNr}-${currentYear}`;
   }
 }
 
+monthOverview.addEventListener("click", loadSelectedDate);
+monthsEl.addEventListener("click", loadSelectedDate);
+
 document.querySelectorAll("a[href='month.html']")[0].href += `?date=${currentMonth}-${currentYear}`;
 document.querySelectorAll("a[href='day.html']")[0].href += `?date=${currentDate}-${currentMonth}-${currentYear}`;
 document.getElementsByTagName("h1")[0].textContent = `${months[selectedMonth]} - ${selectedYear}`;
-
-monthOverview.addEventListener("click", loadSelectedDate);
-monthsEl.addEventListener("click", loadSelectedDate);

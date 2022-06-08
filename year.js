@@ -97,7 +97,7 @@ renderlocalStorageData();
 
 function loadSelectedDate(e) {
   let target = e.target;
-  if (target.className === "day" || target.className === "day highlight") {
+  if (target.classList.contains('day')) {
     const dayNr = +target.textContent;
     const monthNr = months.indexOf(target.parentNode.parentNode.firstChild.textContent);
     location.href = `day.html?date=${dayNr}-${monthNr}-${currentYear}`;

@@ -64,7 +64,6 @@
   border-bottom-right-radius: 10px;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  /* grid-template-rows: repeat(1fr); */
 }
 
 .month-spacer {

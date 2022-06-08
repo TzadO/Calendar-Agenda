@@ -135,7 +135,6 @@
   border: none;
   border-radius: 3px;
   appearance: none;
-  -webkit-appearance: none;
   background: var(--clr-5);
   padding: 4px 8px;
   width: 100%;

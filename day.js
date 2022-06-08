@@ -195,3 +195,6 @@ clearStorageBtn.addEventListener("click", () => {
   localStorage.removeItem("items");
   renderLocalStorageData();
 });
+
+
+
