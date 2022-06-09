@@ -81,7 +81,7 @@
   background-color: #894b60;
   font-size: 1.3rem;
   text-align: center;
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -109,7 +109,6 @@
   border-bottom-right-radius: 15px;
   padding: 4rem 3rem;
   display: grid;
-  grid-gap: 1rem;
   outline: 2px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 6px 4px rgba(0, 0, 0, 0.2);
 }
@@ -138,10 +137,12 @@
   background: var(--clr-5);
   padding: 4px 8px;
   width: 100%;
+  height: fit-content;
+  font-size: 2rem
 }
 
 .form__input::placeholder {
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: #c9c9c9;
   transition: color 0.7s ease;
 }
@@ -254,6 +255,7 @@
   cursor: pointer;
   transition: all 0.2s;
   color: #922146;
+  font-size: 2rem;
 }
 
 .clear-storage:hover {
