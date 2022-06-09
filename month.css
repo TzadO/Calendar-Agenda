@@ -7,6 +7,12 @@
   padding: 1rem;
 }
 
+@media only screen and (max-width: 50em) {
+  .container-left {
+    display: none;
+  }
+}
+
 .months {
   height: 100%;
   border-bottom-left-radius: 10px;
@@ -23,6 +29,7 @@
   padding: 1rem 2rem;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 }
 
 .month:not(:last-child) {
@@ -41,6 +48,12 @@
   font-weight: bold;
   color: var(--clr-6);
   cursor: pointer;
+}
+
+@media only screen and (max-width: 50em) {
+  .month-name {
+    font-size: 1rem;
+  }
 }
 
 .month-name:hover {
