@@ -1,0 +1,26 @@
+{
+  "name": "calendar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "day.js",
+  "scripts": {
+    "prefix:css": "postcss --use autoprefixer -b 'last 10 versions' day.css -o day.prefix.css",
+    "compress:css": "node-sass day.prefix.css day.comp.css --output-style compressed",
+    "build:css": "npm-run-all prefix:css compress:css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TzadO/Calendar-Agenda.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TzadO/Calendar-Agenda/issues"
+  },
+  "homepage": "https://github.com/TzadO/Calendar-Agenda#readme",
+  "devDependencies": {
+    "postcss-cli": "^9.1.0",
+    "autoprefixer": "^10.4.2",
+    "node-sass": "^7.0.1"
+  }
+}
