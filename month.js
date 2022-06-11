@@ -1,25 +1,35 @@
-let param = {};
+"use strict";
+
+const parameters = {};
 location.search
   .replace("?", "")
   .split(" ")
   .forEach((par) => {
-    param[par.split("=")[0]] = par.split("=")[1];
+    parameters[par.split("=")[0]] = par.split("=")[1];
   });
-const dateInput = param.date.split("-");
-const selectedMonth = +dateInput[0];
-const selectedYear = +dateInput[1];
+const dateInput = parameters.date.split("-");
+const selectedMonth = Number(dateInput[0]);
+const selectedYear = Number(dateInput[1]);
 
 const currentYear = new Date().getFullYear();
 const currentMonth = new Date().getMonth();
 const currentDate = new Date().getDate();
 
-const monthDaysEl = document.getElementsByClassName("month-days");
-const monthsEl = document.querySelector(".months");
 const monthOverview = document.querySelector(".month-overview");
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-function weekdays() {
+months.forEach((month) => {
+  document.querySelector(".months").insertAdjacentHTML("beforeend", `<div class="month"><button class="month-name">${month}</button></div>`);
+});
+
+function addCurrentDates() {
+  document.querySelector("a[href='month.html']").href += `?date=${currentMonth}-${currentYear}`;
+  document.querySelector("a[href='day.html']").href += `?date=${currentDate}-${currentMonth}-${currentYear}`;
+  document.getElementsByTagName("h1")[0].textContent = `${months[selectedMonth]} - ${selectedYear}`;
+}
+
+function createWeekDaysList() {
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   for (let day = 0; day < 7; day++) {
     const weekday = document.createElement("li");
     weekday.textContent = `${days[day]}`;
@@ -27,12 +37,12 @@ function weekdays() {
     currentMonthEl.appendChild(weekday);
   }
 }
-weekdays();
 
-months.forEach((month) => {
-  const html = `<div class="month"><button class="month-name">${month}</button></div>`;
-  monthsEl.insertAdjacentHTML("beforeend", html);
-});
+function createSpacer() {
+  const spacer = document.createElement("div");
+  spacer.className = "month-spacer";
+  monthOverview.appendChild(spacer);
+}
 
 function fillDays(year, month) {
   const date = new Date(year, month, 1);
@@ -41,7 +51,7 @@ function fillDays(year, month) {
   for (let day = 0; day < date.getDate(); day++) {
     if (date.getDate() === 1) {
       for (let spacerNr = 0; spacerNr < date.getDay(); spacerNr++) {
-        spacer();
+        createSpacer();
         spacerCounter++;
       }
     }
@@ -54,41 +64,37 @@ function fillDays(year, month) {
     daysCounter++;
     date.setDate(date.getDate() + 1);
   }
-  if (currentMonth === selectedMonth) monthDaysEl[currentDate - 1].classList.add("highlight");
+  
+  if (currentMonth === selectedMonth) document.getElementsByClassName("month-days")[currentDate - 1].classList.add("highlight");
+  
   const totalCounter = daysCounter + spacerCounter;
   if (totalCounter > 28 && totalCounter <= 35) {
     monthOverview.style.gridTemplateRows = "repeat(5, 1fr)";
     for (let spacerNr = 0; spacerNr < 35 - totalCounter; spacerNr++) {
-      spacer();
+      createSpacer();
     }
   }
   if (totalCounter > 35) {
     monthOverview.style.gridTemplateRows = "repeat(6, 1fr)";
     for (let spacerNr = 0; spacerNr < 42 - totalCounter; spacerNr++) {
-      spacer();
+      createSpacer();
     }
   }
 }
-fillDays(selectedYear, selectedMonth);
 
-function spacer() {
-  const spacer = document.createElement("div");
-  spacer.className = "month-spacer";
-  monthOverview.appendChild(spacer);
-}
 
 function renderlocalStorageData() {
   const data = JSON.parse(localStorage.getItem("items"));
   if (!data) return;
   const monthData = [];
   for (const item of data) { 
-      if (+item.date.split("-")[1] === selectedMonth) {
+      if (Number(item.date.split("-")[1]) === selectedMonth) {
         monthData.push(item);
       }
   }
-  const monthDataSorted = monthData.sort((a, b) => +a.start.replace(":", "") - +b.start.replace(":", ""));
+  const monthDataSorted = monthData.sort((a, b) => Number(a.start.replace(":", "")) - Number(b.start.replace(":", "")));
   monthDataSorted.forEach((item) => {
-    if (+item.date.split("-")[1] === selectedMonth) {
+    if (Number(item.date.split("-")[1]) === selectedMonth) {
       const itemEl = document.createElement("div");
       itemEl.className = "item";
       itemEl.textContent = `${item.title} - ${item.start}`;
@@ -96,23 +102,27 @@ function renderlocalStorageData() {
     }
   });
 }
-renderlocalStorageData();
+
 
 function loadSelectedDate(e) {
   let target = e.target;
-  if (target.closest('.month-days')) {
-    const dayNr = +target.closest('.month-days').firstChild.nextSibling.textContent;
-    location.href = `day.html?date=${dayNr}-${selectedMonth}-${selectedYear}`;
-  }
-  if (target.classList.contains("month-name") ) {
-    const monthNr = months.indexOf(target.textContent);
-    location.href = `month.html?date=${monthNr}-${currentYear}`;
-  }
+  
+  if (target.closest('.month-days')) 
+    location.href = `day.html?date=${Number(target.closest('.month-days').firstChild.nextSibling.textContent)}-${selectedMonth}-${selectedYear}`;
+
+  if (target.classList.contains("month-name") ) 
+    location.href = `month.html?date=${months.indexOf(target.textContent)}-${currentYear}`;
 }
 
-monthOverview.addEventListener("click", loadSelectedDate);
-monthsEl.addEventListener("click", loadSelectedDate);
 
-document.querySelectorAll("a[href='month.html']")[0].href += `?date=${currentMonth}-${currentYear}`;
-document.querySelectorAll("a[href='day.html']")[0].href += `?date=${currentDate}-${currentMonth}-${currentYear}`;
-document.getElementsByTagName("h1")[0].textContent = `${months[selectedMonth]} - ${selectedYear}`;
+function addClickListeners() {
+  monthOverview.addEventListener("click", loadSelectedDate);
+  document.querySelector(".months").addEventListener("click", loadSelectedDate);
+}
+
+
+addCurrentDates();
+createWeekDaysList();
+fillDays(selectedYear, selectedMonth);
+addClickListeners()
+renderlocalStorageData();
