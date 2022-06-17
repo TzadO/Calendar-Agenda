@@ -24,19 +24,6 @@ const currentDate = now.getDate();
 const currentDay = now.getDay();
 const today = now.toLocaleDateString();
 
-const form = document.querySelector(".form");
-const inputTitle = document.getElementById("title");
-const inputStart = document.getElementById("start");
-const inputEnd = document.getElementById("end");
-const inputLocation = document.getElementById("location");
-const inputAttendees = document.getElementById("attendees");
-const inputNotes = document.getElementById("notes");
-
-const itemsContainer = document.querySelector(".items");
-const clearStorageBtn = document.querySelector(".clear-storage");
-
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 class Item {
   constructor(date, title, start, end, location, attendees, notes) {
@@ -52,10 +39,16 @@ class Item {
 
 class App {
   #items = [];
-
+  #inputTitle = document.getElementById("title");
+  #inputStart = document.getElementById("start");
+  #inputEnd = document.getElementById("end");
+  #inputLocation = document.getElementById("location");
+  #inputAttendees = document.getElementById("attendees");
+  #inputNotes = document.getElementById("notes");
+  
   constructor() {
     this._getLocalStorageData();
-    form.addEventListener("submit", (e) => {
+    document.querySelector(".form").addEventListener("submit", (e) => {
       this._createNewItem(e);
     });
   }
@@ -66,15 +59,16 @@ class App {
     this.#items = data;
   }
 
+
   _createNewItem(e) {
     e.preventDefault();
     const date = `${selectedDate}-${selectedMonth}-${selectedYear}`;
-    const title = inputTitle.value;
-    const start = inputStart.value;
-    const end = inputEnd.value;
-    const location = inputLocation.value;
-    const attendees = inputAttendees.value;
-    const notes = inputNotes.value;
+    const title = this.#inputTitle.value;
+    const start = this.#inputStart.value;
+    const end = this.#inputEnd.value;
+    const location = this.#inputLocation.value;
+    const attendees = this.#inputAttendees.value;
+    const notes = this.#inputNotes.value;
     let newItem = new Item(date, title, start, end, location, attendees, notes);
     this.#items.push(newItem);
     this._setLocalStorage();
@@ -87,29 +81,38 @@ class App {
   }
 
   _clearForm() {
-    inputTitle.value = inputStart.value = inputEnd.value = inputLocation.value = inputAttendees.value = inputNotes.value = "";
+    this.#inputTitle.value = this.#inputStart.value = this.#inputEnd.value = this.#inputLocation.value = this.#inputAttendees.value = this.#inputNotes.value = "";
   }
 }
 const app = new App();
 
-function weekdays() {
+
+function fillWeekdays() {
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   for (let day = 0; day < 7; day++) {
     const weekday = document.createElement("li");
     weekday.textContent = `${days[day]}`;
-    const currentMonthEl = document.getElementsByClassName("weekdays-list")[0];
-    currentMonthEl.appendChild(weekday);
+    document.getElementsByClassName("weekdays-list")[0].appendChild(weekday);
   }
 }
-weekdays();
+
+
+function addSpacer() {
+  const spacer = document.createElement("div");
+  spacer.className = "spacer";
+  document.querySelector(".days").appendChild(spacer);
+}
+
 
 function fillDays(year, month) {
   const date = new Date(year, month, 1);
   let daysCounter = 0,
     spacerCounter = 0;
+  
   for (let day = 0; day < date.getDate(); day++) {
     if (date.getDate() === 1) {
       for (let spacerNr = 0; spacerNr < date.getDay(); spacerNr++) {
-        spacer();
+        addSpacer();
         spacerCounter++;
       }
     }
@@ -120,28 +123,27 @@ function fillDays(year, month) {
     date.setDate(date.getDate() + 1);
     daysCounter++;
   }
+
   const totalCounter = daysCounter + spacerCounter;
   if (totalCounter > 28 && totalCounter <= 35) {
     for (let spacerNr = 0; spacerNr < 35 - totalCounter; spacerNr++) {
-      spacer();
+      addSpacer();
     }
   }
   if (totalCounter > 35) {
     for (let spacerNr = 0; spacerNr < 42 - totalCounter; spacerNr++) {
-      spacer();
+      addSpacer();
     }
   }
-}
-fillDays(selectedYear, selectedMonth);
 
-function spacer() {
-  const spacer = document.createElement("div");
-  spacer.className = "spacer";
-  document.querySelector(".days").appendChild(spacer);
+  document.getElementsByClassName("day")[selectedDate - 1].classList.add("highlight");
 }
+
 
 function renderLocalStorageData() {
+  const itemsContainer = document.querySelector(".items");
   itemsContainer.innerHTML = "";
+  
   const data = JSON.parse(localStorage.getItem("items"));
   if (!data) return;
   const dayData = [];
@@ -151,6 +153,7 @@ function renderLocalStorageData() {
       }
   }
   const dayDataSorted = dayData.sort((a, b) => +a.start.replace(":", "") - +b.start.replace(":", ""));
+  
   dayDataSorted.forEach((item) => {
     if (item.date === selectedFullDate) {
       const html = `
@@ -175,26 +178,37 @@ function renderLocalStorageData() {
     }
   });
 }
-renderLocalStorageData();
 
-function loadSelectedDate(e) {
-  let target = e.target;
+
+function loadSelectedDate(event) {
+  let target = event.target;
   if (target.className === "day") {
     const dayNr = +target.textContent;
     location.href = `day.html?date=${dayNr}-${selectedMonth}-${selectedYear}`;
   }
 }
 
-document.getElementsByClassName("day")[selectedDate - 1].classList.add("highlight");
-document.querySelectorAll("a[href='month.html']")[0].href += `?date=${currentMonth}-${currentYear}`;
-document.querySelectorAll("a[href='day.html']")[0].href += `?date=${currentDate}-${currentMonth}-${currentYear}`;
-document.getElementsByTagName("h1")[0].textContent = `${days[selectedDay]} - ${selectedDate} - ${months[selectedMonth]} - ${selectedYear}`;
 
-document.querySelector(".month-overview").addEventListener("click", loadSelectedDate);
-clearStorageBtn.addEventListener("click", () => {
-  localStorage.removeItem("items");
-  renderLocalStorageData();
-});
+function addCurrentDates() {
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  document.querySelectorAll("a[href='month.html']")[0].href += `?date=${currentMonth}-${currentYear}`;
+  document.querySelectorAll("a[href='day.html']")[0].href += `?date=${currentDate}-${currentMonth}-${currentYear}`;
+  document.getElementsByTagName("h1")[0].textContent = `${days[selectedDay]} - ${selectedDate} - ${months[selectedMonth]} - ${selectedYear}`;
+}
 
 
+function addClickHandlers() {
+  document.querySelector(".month-overview").addEventListener("click", loadSelectedDate);
+  document.querySelector(".clear-storage").addEventListener("click", () => {
+    localStorage.removeItem("items");
+    renderLocalStorageData();
+  });
+}
 
+
+addCurrentDates();
+fillWeekdays();
+fillDays(selectedYear, selectedMonth);
+renderLocalStorageData();
+addClickHandlers();
